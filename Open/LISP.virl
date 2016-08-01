@@ -1,0 +1,1414 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <node name="R2" type="SIMPLE" subtype="CSR1000v" location="495,260" coordinate="41.21172151054789,-102.568359375">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 15:58:39 UTC Sun May 15 2016
+!
+version 15.6
+service config
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname CSR-2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$o/mj$KpPuJ1CJmBm4p.DQFXsR60
+!
+no aaa new-model
+!
+ip vrf mgmt
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1672445877
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1672445877
+ revocation-check none
+ rsakeypair TP-self-signed-1672445877
+!
+crypto pki trustpoint TP-self-signed-3553097208
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3553097208
+ revocation-check none
+ rsakeypair TP-self-signed-3553097208
+!
+crypto pki trustpoint TP-self-signed-2870480142
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2870480142
+ revocation-check none
+ rsakeypair TP-self-signed-2870480142
+!
+!
+crypto pki certificate chain TP-self-signed-1672445877
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-3553097208
+crypto pki certificate chain TP-self-signed-2870480142
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 95N18LXUQ7Q
+!
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 5 $1$Eiu8$dh2imV8x8YmmFqN1Q8hVA1
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+! 
+! 
+! 
+! 
+!
+!
+interface Loopback0
+ ip address 10.2.2.2 255.255.255.255
+ ip router isis 1
+!
+interface LISP0
+!
+interface GigabitEthernet1
+ ip address 10.255.0.28 255.255.0.0
+ negotiation auto
+!
+interface GigabitEthernet1.201
+ encapsulation dot1Q 201
+ ip vrf forwarding mgmt
+ ip address 10.202.201.22 255.255.255.0
+!
+interface GigabitEthernet2
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet2.12
+ encapsulation dot1Q 12
+ ip address 10.1.2.2 255.255.255.0
+ ip router isis 1
+!
+interface GigabitEthernet3
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet3.24
+ encapsulation dot1Q 24
+ ip address 10.2.4.2 255.255.255.0
+ ip router isis 1
+!
+interface GigabitEthernet4
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet4.212
+ encapsulation dot1Q 212
+ ip address 10.2.12.2 255.255.255.0
+ ip router isis 1
+!
+interface GigabitEthernet5
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet5.25
+ encapsulation dot1Q 25
+ ip address 10.2.5.2 255.255.255.0
+!
+router lisp
+ database-mapping 10.2.5.0/24 10.2.4.2 priority 1 weight 50
+ database-mapping 10.2.5.0/24 10.2.12.2 priority 1 weight 50
+ database-mapping 10.5.5.5/32 10.2.4.2 priority 1 weight 50
+ database-mapping 10.5.5.5/32 10.2.12.2 priority 1 weight 50
+ ipv4 itr map-resolver 10.1.1.1
+ ipv4 itr
+ ipv4 etr map-server 10.1.1.1 key K-LISP
+ ipv4 etr
+ exit
+!
+router isis 1
+ net 01.0000.0000.0002.00
+ is-type level-2-only
+ log-adjacency-changes all
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+ip tftp source-interface GigabitEthernet1
+ip route 10.1.105.0 255.255.255.0 10.202.201.254
+ip route 10.5.5.5 255.255.255.255 10.2.5.5
+ip route vrf mgmt 10.1.105.0 255.255.255.0 10.202.201.254
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+alias exec export copy runn tftp://10.202.201.150/CSR-2.cfg   
+!
+line con 0
+ stopbits 1
+line vty 0 4
+ login local
+line vty 5 15
+ login local
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2"/>
+        <interface id="1" name="GigabitEthernet3"/>
+        <interface id="2" name="GigabitEthernet4"/>
+        <interface id="3" name="GigabitEthernet5"/>
+    </node>
+    <node name="R4" type="SIMPLE" subtype="CSR1000v" location="783,260" coordinate="41.04621681452065,-90.52734375">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 16:00:04 UTC Sun May 15 2016
+!
+version 15.6
+service config
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname CSR-4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$nvBk$sXpugoTMne/9F0oBPiHtM1
+!
+no aaa new-model
+!
+ip vrf mgmt
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1376114007
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1376114007
+ revocation-check none
+ rsakeypair TP-self-signed-1376114007
+!
+crypto pki trustpoint TP-self-signed-3867528110
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3867528110
+ revocation-check none
+ rsakeypair TP-self-signed-3867528110
+!
+crypto pki trustpoint TP-self-signed-1914068026
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1914068026
+ revocation-check none
+ rsakeypair TP-self-signed-1914068026
+!
+!
+crypto pki certificate chain TP-self-signed-1376114007
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-3867528110
+crypto pki certificate chain TP-self-signed-1914068026
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9NFTO0VRZN7
+license boot level ax
+!
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 5 $1$nZyr$WKzRqKBWpH9QC6GS5sNOD0
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+! 
+! 
+! 
+! 
+!
+!
+interface Loopback0
+ ip address 10.4.4.4 255.255.255.255
+ ip router isis 1
+!
+interface LISP0
+!
+interface VirtualPortGroup0
+ ip unnumbered GigabitEthernet1
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet1
+ ip address 10.255.0.27 255.255.0.0
+ negotiation auto
+!
+interface GigabitEthernet1.201
+ encapsulation dot1Q 201
+ ip vrf forwarding mgmt
+ ip address 10.202.201.24 255.255.255.0
+!
+interface GigabitEthernet2
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet2.45
+ encapsulation dot1Q 45
+ ip address 10.4.5.4 255.255.255.0
+!
+interface GigabitEthernet3
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet3.24
+ encapsulation dot1Q 24
+ ip address 10.2.4.4 255.255.255.0
+ ip router isis 1
+!
+interface GigabitEthernet4
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet4.46
+ encapsulation dot1Q 46
+ ip address 10.4.6.4 255.255.255.0
+!
+interface GigabitEthernet5
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet5.413
+ encapsulation dot1Q 413
+ ip address 10.4.13.4 255.255.255.0
+ ip router isis 1
+!
+router lisp
+ database-mapping 10.4.5.0/24 10.2.4.4 priority 1 weight 50
+ database-mapping 10.4.5.0/24 10.4.13.4 priority 1 weight 50
+ database-mapping 10.4.6.0/24 10.2.4.4 priority 1 weight 50
+ database-mapping 10.4.6.0/24 10.4.13.4 priority 1 weight 50
+ database-mapping 10.5.5.5/32 10.2.4.4 priority 1 weight 50
+ database-mapping 10.5.5.5/32 10.4.13.4 priority 1 weight 50
+ database-mapping 10.6.6.6/32 10.2.4.4 priority 1 weight 50
+ database-mapping 10.6.6.6/32 10.4.13.4 priority 1 weight 50
+ ipv4 itr map-resolver 10.1.1.1
+ ipv4 itr
+ ipv4 etr map-server 10.1.1.1 key K-LISP
+ ipv4 etr
+ exit
+!
+router isis 1
+ net 01.0000.0000.0004.00
+ is-type level-2-only
+ log-adjacency-changes all
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+!
+no ip http server
+ip http secure-server
+ip tftp source-interface GigabitEthernet1.201
+ip route 10.1.105.0 255.255.255.0 10.202.201.254
+ip route 10.5.5.5 255.255.255.255 10.4.5.5
+ip route 10.6.6.6 255.255.255.255 10.4.6.6
+ip route vrf mgmt 10.1.105.0 255.255.255.0 10.202.201.254
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+alias exec export copy runn tftp://10.202.201.150/CSR-4.cfg   
+!
+line con 0
+ stopbits 1
+line vty 0 4
+ login local
+line vty 5 15
+ login local
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2"/>
+        <interface id="1" name="GigabitEthernet3"/>
+        <interface id="2" name="GigabitEthernet4"/>
+        <interface id="3" name="GigabitEthernet5"/>
+    </node>
+    <node name="R1" type="SIMPLE" subtype="IOSv" location="305,264" coordinate="41.21172151054789,-112.7197265625">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 16:43:34 UTC Sun May 15 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.1.1.1 255.255.255.255
+ ip router isis 1
+!
+interface GigabitEthernet0/0
+ ip address 10.255.0.29 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1.12
+ encapsulation dot1Q 12
+ ip address 10.1.2.1 255.255.255.0
+ ip router isis 1
+!
+router lisp
+ site R5
+  authentication-key K-LISP
+  eid-prefix 10.2.5.0/24
+  eid-prefix 10.4.5.0/24
+  eid-prefix 10.5.5.5/32 accept-more-specifics
+  exit
+ !
+ site R6
+  authentication-key K-LISP
+  eid-prefix 10.4.6.0/24
+  eid-prefix 10.6.6.6/32 accept-more-specifics
+  exit
+ !
+ ipv4 map-server
+ ipv4 map-resolver
+ exit
+!
+router isis 1
+ net 01.0000.0000.0001.00
+ is-type level-2-only
+ log-adjacency-changes all
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <node name="R5" type="SIMPLE" subtype="IOSv" location="628,125" coordinate="40.747256962804194,-79.62890625">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 16:43:26 UTC Sun May 15 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R5
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.5.5.5 255.255.255.255
+!
+interface GigabitEthernet0/0
+ ip address 10.255.0.26 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1.45
+ encapsulation dot1Q 45
+ ip address 10.4.5.5 255.255.255.0
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2.25
+ encapsulation dot1Q 25
+ ip address 10.2.5.5 255.255.255.0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 10.2.5.2
+ip route 0.0.0.0 0.0.0.0 10.4.5.4
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="R6" type="SIMPLE" subtype="IOSv" location="1008,261" coordinate="34.16181816123039,-86.6162109375">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 16:43:29 UTC Sun May 15 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R6
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.6.6.6 255.255.255.255
+!
+interface GigabitEthernet0/0
+ ip address 10.255.0.25 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1.46
+ encapsulation dot1Q 46
+ ip address 10.4.6.6 255.255.255.0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 10.4.6.4
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <node name="XR2" type="SIMPLE" subtype="IOS XRv" location="498,479" coordinate="34.41597338448186,-103.447265625">
+        <extensions>
+            <entry key="config" type="String">!! IOS XR Configuration 6.0.0
+!! Last configuration change at Sun May 15 16:06:07 2016 by cisco
+!
+hostname XR-2
+vrf mgmt
+!
+line console
+ exec-timeout 60 0
+!
+interface Loopback0
+ ipv4 address 10.12.12.12 255.255.255.255
+!
+interface MgmtEth0/0/CPU0/0
+ shutdown
+!
+interface GigabitEthernet0/0/0/0
+!
+interface GigabitEthernet0/0/0/0.201
+ vrf mgmt
+ ipv4 address 10.202.201.32 255.255.255.0
+ encapsulation dot1q 201
+!
+interface GigabitEthernet0/0/0/0.1213
+ ipv4 address 10.12.13.12 255.255.255.0
+ encapsulation dot1q 1213
+!
+interface GigabitEthernet0/0/0/1
+!
+interface GigabitEthernet0/0/0/1.212
+ ipv4 address 10.2.12.12 255.255.255.0
+ encapsulation dot1q 212
+!
+interface GigabitEthernet0/0/0/2
+!
+interface GigabitEthernet0/0/0/2.712
+ ipv4 address 10.7.12.12 255.255.255.0
+ encapsulation dot1q 712
+!
+router isis 1
+ is-type level-2-only
+ net 01.0000.0000.0012.00
+ address-family ipv4 unicast
+ !
+ interface Loopback0
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0.212
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0.412
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0.1213
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/1.212
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/2.712
+  address-family ipv4 unicast
+  !
+ !
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0/0/0"/>
+        <interface id="1" name="GigabitEthernet0/0/0/1"/>
+        <interface id="2" name="GigabitEthernet0/0/0/2"/>
+    </node>
+    <node name="XR3" type="SIMPLE" subtype="IOS XRv" location="785,475" coordinate="33.39475921857797,-92.1533203125">
+        <extensions>
+            <entry key="config" type="String">!! IOS XR Configuration 6.0.0
+!! Last configuration change at Sun May 15 16:06:37 2016 by cisco
+!
+hostname XR-3
+vrf mgmt
+!
+interface Loopback0
+ ipv4 address 10.13.13.13 255.255.255.255
+!
+interface MgmtEth0/0/CPU0/0
+ shutdown
+!
+interface GigabitEthernet0/0/0/0
+!
+interface GigabitEthernet0/0/0/0.201
+ vrf mgmt
+ ipv4 address 10.202.201.33 255.255.255.0
+ encapsulation dot1q 201
+!
+interface GigabitEthernet0/0/0/0.1213
+ ipv4 address 10.12.13.13 255.255.255.0
+ encapsulation dot1q 1213
+!
+interface GigabitEthernet0/0/0/1
+!
+interface GigabitEthernet0/0/0/1.413
+ ipv4 address 10.4.13.13 255.255.255.0
+ encapsulation dot1q 413
+!
+router isis 1
+ is-type level-2-only
+ net 01.0000.0000.0013.00
+ address-family ipv4 unicast
+ !
+ interface Loopback0
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0.213
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0.1213
+  address-family ipv4 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/1.413
+  address-family ipv4 unicast
+  !
+ !
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0/0/0"/>
+        <interface id="1" name="GigabitEthernet0/0/0/1"/>
+    </node>
+    <node name="R8" type="SIMPLE" subtype="IOSv" location="115,367" coordinate="49.83798245308485,-85.1220703125">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 16:43:34 UTC Sun May 15 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R8
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.8.8.8 255.255.255.255
+ ip router isis 1
+!
+interface GigabitEthernet0/0
+ ip address 10.255.0.20 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1.78
+ encapsulation dot1Q 78
+ ip address 10.7.8.8 255.255.255.0
+ ip router isis 1
+!
+router ospf 1
+ network 0.0.0.0 255.255.255.255 area 0
+!
+router isis 1
+ net 01.0000.0000.0008.00
+ is-type level-2-only
+ log-adjacency-changes all
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.5.5.5 255.255.255.255 10.7.8.7
+ip route 10.6.6.6 255.255.255.255 10.7.8.7
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <node name="R7" type="SIMPLE" subtype="CSR1000v" location="296,364">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 16:44:04 UTC Sun May 15 2016
+!
+version 15.6
+service config
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname CSR-7
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$OzzX$y.9EZunFBGUJJ7MEz/BjK0
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2293502078
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2293502078
+ revocation-check none
+ rsakeypair TP-self-signed-2293502078
+!
+crypto pki trustpoint TP-self-signed-3512074292
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3512074292
+ revocation-check none
+ rsakeypair TP-self-signed-3512074292
+!
+crypto pki trustpoint TP-self-signed-824602536
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-824602536
+ revocation-check none
+ rsakeypair TP-self-signed-824602536
+!
+!
+crypto pki certificate chain TP-self-signed-2293502078
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-3512074292
+crypto pki certificate chain TP-self-signed-824602536
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9YP1S261S0B
+!
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 5 $1$UUnn$NsKoilxZR1U5vmX3tFHJd/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+! 
+! 
+! 
+! 
+!
+!
+interface Loopback0
+ ip address 10.7.7.7 255.255.255.255
+ ip router isis 1
+!
+interface LISP0
+!
+interface GigabitEthernet1
+ ip address 10.255.0.24 255.255.0.0
+ negotiation auto
+!
+interface GigabitEthernet2
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet2.712
+ encapsulation dot1Q 712
+ ip address 10.7.12.7 255.255.255.0
+ ip router isis 1
+!
+interface GigabitEthernet3
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet3.78
+ encapsulation dot1Q 78
+ ip address 10.7.8.7 255.255.255.0
+ ip router isis 1
+!
+interface GigabitEthernet4
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet5
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet6
+ no ip address
+ shutdown
+ negotiation auto
+!
+router lisp
+ map-cache 10.5.5.5/32 map-request
+ map-cache 10.6.6.6/32 map-request
+ ipv4 map-server
+ ipv4 map-resolver
+ ipv4 proxy-etr
+ ipv4 proxy-itr 10.7.7.7
+ ipv4 itr map-resolver 10.1.1.1
+ exit
+!
+router isis 1
+ net 01.0000.0000.0007.00
+ is-type level-2-only
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+ip tftp source-interface GigabitEthernet1
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ stopbits 1
+line vty 0
+ login
+line vty 1
+ login
+ length 0
+line vty 2 4
+ login
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2"/>
+        <interface id="1" name="GigabitEthernet3"/>
+        <interface id="2" name="GigabitEthernet4"/>
+        <interface id="3" name="GigabitEthernet5"/>
+        <interface id="4" name="GigabitEthernet6"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[2]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[6]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[3]" src="/virl:topology/virl:node[6]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[4]" src="/virl:topology/virl:node[7]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[3]" src="/virl:topology/virl:node[9]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[2]" src="/virl:topology/virl:node[8]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[2]" src="/virl:topology/virl:node[1]/virl:interface[4]"/>
+</topology>
